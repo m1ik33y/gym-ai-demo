@@ -31,18 +31,11 @@ async function sendMessage() {
 
   chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
 
-  // Send as form-data to avoid preflight CORS
-  const formData = new URLSearchParams();
-  formData.append("data", JSON.stringify({
-    message: userText,
-    botId: botId
-  }));
-
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      body: formData
-    });
+  const response = await fetch(endpoint, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: userText, botId: botId })
+});
 
     const data = await response.json();
     chat.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
@@ -56,6 +49,7 @@ async function sendMessage() {
 
 </body>
 </html>
+
 
 
 
