@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gym AI Chat</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: 40px auto; }
+    #chat { border: 1px solid #ddd; padding: 10px; height: 300px; overflow-y: auto; }
+    input { width: 75%; padding: 8px; }
+    button { padding: 8px; }
+  </style>
+</head>
+<body>
+
+<h2>Gym AI Assistant</h2>
+
+<div id="chat"></div>
+
+<input type="text" id="message" placeholder="Ask something...">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+const endpoint = "https://script.google.com/macros/s/AKfycbw-i9IuU7cxqtikOK0Z6eIinb8GdvBexYArTGRvUKVYFAilHd-fpxWcxJvIFhO2Jm9H/exec";
+const botId = "weightloss";
+
+async function sendMessage() {
+  const input = document.getElementById("message");
+  const chat = document.getElementById("chat");
+  const userText = input.value;
+
+  if (!userText) return;
+
+  chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: userText,
+      botId: botId
+    })
+  });
+
+  const data = await response.json();
+
+  chat.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
+  input.value = "";
+}
+</script>
+
+</body>
+</html>
