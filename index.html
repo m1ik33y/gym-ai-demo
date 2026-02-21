@@ -32,11 +32,14 @@ async function sendMessage() {
   chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
 
   try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userText, botId: botId })
-    });
+    // Send as form-data to match Apps Script
+const formData = new URLSearchParams();
+formData.append("data", JSON.stringify({ message: userText, botId: botId }));
+
+const response = await fetch(endpoint, {
+  method: "POST",
+  body: formData
+});
 
     const data = await response.json();
     chat.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
@@ -51,6 +54,7 @@ async function sendMessage() {
 
 </body>
 </html>
+
 
 
 
