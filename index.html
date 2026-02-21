@@ -19,7 +19,7 @@
 <button onclick="sendMessage()">Send</button>
 
 <script>
-const endpoint = "https://script.google.com/macros/s/AKfycbw-i9IuU7cxqtikOK0Z6eIinb8GdvBexYArTGRvUKVYFAilHd-fpxWcxJvIFhO2Jm9H/exec";
+const endpoint = "YOUR_EXEC_URL_HERE"; // replace with your Apps Script /exec URL
 const botId = "weightloss";
 
 async function sendMessage() {
@@ -31,23 +31,29 @@ async function sendMessage() {
 
   chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: userText,
-      botId: botId
-    })
-  });
+  // Use form-data instead of JSON to avoid CORS preflight
+  const formData = new URLSearchParams();
+  formData.append("data", JSON.stringify({
+    message: userText,
+    botId: botId
+  }));
 
-  const data = await response.json();
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      body: formData
+    });
 
-  chat.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
+    const data = await response.json();
+    chat.innerHTML += "<p><b>Bot:</b> " + (data.reply || data.error) + "</p>";
+  } catch (err) {
+    chat.innerHTML += "<p><b>Bot:</b> Error: " + err.toString() + "</p>";
+  }
+
   input.value = "";
 }
 </script>
 
 </body>
 </html>
+
