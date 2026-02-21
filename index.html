@@ -33,12 +33,10 @@ async function sendMessage() {
 
   try {
     // Send as form-data to match Apps Script
-const formData = new URLSearchParams();
-formData.append("data", JSON.stringify({ message: userText, botId: botId }));
-
 const response = await fetch(endpoint, {
   method: "POST",
-  body: formData
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: userText, botId: botId })
 });
 
     const data = await response.json();
@@ -54,3 +52,4 @@ const response = await fetch(endpoint, {
 
 </body>
 </html>
+
