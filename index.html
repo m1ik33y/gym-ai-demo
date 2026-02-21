@@ -19,7 +19,7 @@
 <button onclick="sendMessage()">Send</button>
 
 <script>
-const endpoint = "https://script.google.com/macros/s/AKfycbw-i9IuU7cxqtikOK0Z6eIinb8GdvBexYArTGRvUKVYFAilHd-fpxWcxJvIFhO2Jm9H/exec"; // replace with your Apps Script /exec URL
+const endpoint = "https://script.google.com/macros/s/AKfycbw-i9IuU7cxqtikOK0Z6eIinb8GdvBexYArTGRvUKVYFAilHd-fpxWcxJvIFhO2Jm9H/exec"; // Replace with your Apps Script /exec URL
 const botId = "weightloss";
 
 async function sendMessage() {
@@ -31,7 +31,7 @@ async function sendMessage() {
 
   chat.innerHTML += "<p><b>You:</b> " + userText + "</p>";
 
-  // Use form-data instead of JSON to avoid CORS preflight
+  // Send as form-data to avoid preflight CORS
   const formData = new URLSearchParams();
   formData.append("data", JSON.stringify({
     message: userText,
@@ -56,5 +56,6 @@ async function sendMessage() {
 
 </body>
 </html>
+
 
 
